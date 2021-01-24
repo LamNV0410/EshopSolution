@@ -46,7 +46,7 @@ namespace Application_Services.Service
 
         public async Task<VM_Product> GetProductById(int id)
         {
-            Product productContext = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            Product productContext = await _context.Products.Include(x=>x.Category).Include(x=>x.ImageProducts).FirstOrDefaultAsync(x => x.Id == id);
             VM_Product product =null;
             if (productContext != null)
             {

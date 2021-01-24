@@ -19,6 +19,7 @@ namespace BackEnd_API
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "myCros";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +30,15 @@ namespace BackEnd_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000")
+                                      .SetIsOriginAllowedToAllowWildcardSubdomains();
+                                  });
+            });
             services.AddDbContext<EshopDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.SystemContants.MainConnectionString)));
             
             // TODO : Dependency Injection
@@ -115,6 +125,8 @@ namespace BackEnd_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

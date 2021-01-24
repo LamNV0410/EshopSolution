@@ -1,6 +1,7 @@
 ﻿using Application_Services.IService;
 using Common_API.Request;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace BackEnd_API.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        [EnableCors("myCros")]
         [HttpGet("all-product")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllProductPagging([FromQuery] GetAllProductAPI request)
@@ -35,9 +37,10 @@ namespace BackEnd_API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [EnableCors("myCros")]
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetProductById([FromQuery] int id)
+        public async Task<IActionResult> GetProductById(int id)
         {
             var result = await _productService.GetProductById(id);
 
